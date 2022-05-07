@@ -1,11 +1,11 @@
 const prod = {
     url: {
-     API_URL: process.env.PROD_API_URL
+     API_URL: 'http://localhost:5000'
      }
    };
    const dev = {
     url: {
-     API_URL: process.env.DEV_API_URL
+     API_URL: 'http://writersblcok1.herokuapp.com'
     }
    };
    export const apiConfig = process.env.NODE_ENV === 'development' ? dev : prod;

@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { UserContext } from '../UserContext';
 import axios from 'axios';
 import StoryPreview from './StoryPreview';
+import { apiConfig } from '../Constants'
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -43,6 +44,7 @@ function a11yProps(index) {
   
 
 export default function Dashboard(){
+    const url = apiConfig.url.API_URL
     const userContext = useContext(UserContext)
     const [value, setValue] = useState(0);
     const [myStories, setMyStories] = useState([])
@@ -56,7 +58,7 @@ export default function Dashboard(){
 
     const getMyStories = async () => {
         try {
-            const stories = await axios(`/stories/mystories/${userContext[0].user_id}`)
+            const stories = await axios(`${url}/stories/mystories/${userContext[0].user_id}`)
             setMyStories(stories.data)
         } catch (err) {
             console.error(err)
@@ -65,7 +67,7 @@ export default function Dashboard(){
 
     const getMostViewedStories = async () => {
         try {
-            const stories = await axios("/stories/mostviewed")
+            const stories = await axios(`${url}/stories/mostviewed`)
             setMostViewededStories(stories.data)
         } catch (err) {
             console.error(err)
@@ -74,7 +76,7 @@ export default function Dashboard(){
 
     const getNewestStories = async () => {
         try {
-            const stories = await axios("/stories/neweststories")
+            const stories = await axios(`${url}/stories/neweststories`)
             setNewestStories(stories.data)
         } catch (err) {
             console.error(err)

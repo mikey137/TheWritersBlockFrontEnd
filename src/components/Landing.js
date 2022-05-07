@@ -11,6 +11,7 @@ export default function Landing(){
     const getMostViewedStories = async () => {
         try {
             const stories = await axios(`${url}/stories/mostviewed`)
+
             setMostViewededStories(stories.data)
         } catch (err) {
             console.error(err)
