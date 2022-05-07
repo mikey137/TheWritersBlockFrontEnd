@@ -1,6 +1,6 @@
 const prod = {
     url: {
-     API_URL: 'https://writersblcok1.herokuapp.com'
+     API_URL: 'https://writersblock1.herokuapp.com'
      }
    };
    const dev = {
