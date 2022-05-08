@@ -16,10 +16,9 @@ import StoryPage from './components/StoryPage';
 import CreateStory from './components/CreateStory';
 import { UserProvider } from './UserContext';
 import axios from 'axios';
-import { apiConfig } from './Constants'
+import { API_BASE_URL } from './Constants'
 
 function App() {
-  const url = apiConfig
   const [isAuthenticated, setIsAuthenticated] = useState("")
 
   async function isAuth(){
@@ -31,7 +30,7 @@ function App() {
             token: localStorage.token
           }
         }
-        const response = await axios(`${url}/auth/is-verify`, config)
+        const response = await axios(`${API_BASE_URL}/auth/is-verify`, config)
         
         setIsAuthenticated(response.data)
       } catch (err) {

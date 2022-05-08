@@ -7,6 +7,7 @@ import CloudinaryWidgetCoverPhoto from './CloudinaryWidgetCoverPhoto'
 import CloudinaryProfilePhotoWidget from './CloudinaryProfilePhotoWidget'
 import { UserContext } from '../UserContext';
 import axios from 'axios';
+import { API_BASE_URL } from '../Constants';
 
 export default function PublicProfile({isAuthenticated}){
     const userContext = useContext(UserContext)
@@ -36,7 +37,7 @@ export default function PublicProfile({isAuthenticated}){
 
     const getUserInfo = async () => {
         try {
-           const response = await axios(`/users/publicuserinfo/${id}`)
+           const response = await axios(`${API_BASE_URL}/users/publicuserinfo/${id}`)
            setUserProfileInfo(response.data)
         } catch (err) {
             console.error(err)
@@ -45,7 +46,7 @@ export default function PublicProfile({isAuthenticated}){
 
     const getUserStories = async () => {
         try {
-            const stories = await axios(`/stories/mystories/${id}`)
+            const stories = await axios(`${API_BASE_URL}/stories/mystories/${id}`)
             setUserStories(stories.data)
         } catch (err) {
             console.error(err)
@@ -61,7 +62,7 @@ export default function PublicProfile({isAuthenticated}){
                 }
             }
             const data = {about_user: `${userProfileInfo.about_user }`} 
-            const updatedAboutText = await axios.put("/users/userabout", data, config)
+            const updatedAboutText = await axios.put(`${API_BASE_URL}/users/userabout`, data, config)
             console.log(updatedAboutText)
         } catch(err){
             console.error(err)
@@ -78,7 +79,7 @@ export default function PublicProfile({isAuthenticated}){
             }
             
             const data = {userToFollow: id}
-            const followUser = await axios.post("/followers/followuser", data, config)
+            const followUser = await axios.post(`${API_BASE_URL}/followers/followuser`, data, config)
 
             console.log(followUser)
         } catch (err) {
@@ -95,7 +96,7 @@ export default function PublicProfile({isAuthenticated}){
                 }
             }
             const data = {followee: id}
-            const bool = await axios.post("/followers/isfollowing", data, config)
+            const bool = await axios.post(`${API_BASE_URL}/followers/isfollowing`, data, config)
             
             setIsFollowing(bool.data)
         } catch (err) {
@@ -105,7 +106,7 @@ export default function PublicProfile({isAuthenticated}){
 
     const getNumberOfFollowers = async () => {
         try {
-            const  followers = await axios(`/followers/numberoffollowers/${id}`)
+            const  followers = await axios(`${API_BASE_URL}/followers/numberoffollowers/${id}`)
             setNumberOfFollowers(followers.data.rows[0].count)
         } catch (err) {
             console.error(err)

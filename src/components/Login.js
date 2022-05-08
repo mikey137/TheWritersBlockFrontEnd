@@ -11,6 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
+import { API_BASE_URL } from '../Constants'
 
 
 export default function Login({setIsAuthenticated}){
@@ -41,7 +42,7 @@ export default function Login({setIsAuthenticated}){
         e.preventDefault()
         try {
             const body = { email, password }
-            const { data } = await axios.post("http://localhost:5000/auth/login", body)
+            const { data } = await axios.post(`${API_BASE_URL}/auth/login`, body)
             localStorage.setItem("token", data.token)
             if(data.token){
                 setIsAuthenticated(true)

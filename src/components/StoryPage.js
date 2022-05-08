@@ -6,6 +6,7 @@ import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import axios from 'axios';
+import {API_BASE_URL} from '../Constants'
 
 export default function StoryPage(){
     const  {id}   = useParams()
@@ -24,7 +25,7 @@ export default function StoryPage(){
 
     const updateViewCount = async () => {
         try {
-            const update = await axios.put(`/stories/viewstory/${id}`)
+            const update = await axios.put(`${API_BASE_URL}/stories/viewstory/${id}`)
         } catch (err) {
             console.log(err)
         }
@@ -32,7 +33,7 @@ export default function StoryPage(){
 
     const getStoryInfo = async () => {
         try{
-            const response = await axios(`/stories/getstory/${id}`) 
+            const response = await axios(`${API_BASE_URL}/stories/getstory/${id}`) 
             console.log(response.data)
             const convertedStoryText = (convertToHTML(convertFromRaw(JSON.parse(response.data.story_text))))
             setStoryInfo({
@@ -53,7 +54,7 @@ export default function StoryPage(){
 
     const likeStory = async () => {
         try {
-            const addLike = await axios.put(`/stories/likestory/${id}`) 
+            const addLike = await axios.put(`${API_BASE_URL}/stories/likestory/${id}`) 
             setStoryInfo({
                 ...storyInfo,
                 likes: addLike.data

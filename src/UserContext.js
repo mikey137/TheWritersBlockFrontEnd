@@ -1,11 +1,10 @@
 import React,{useState, createContext, useEffect} from "react"
 import axios from "axios"
-import { apiConfig } from "./Constants"
+import { API_BASE_URL } from "./Constants"
 
 export const UserContext = createContext()
 
 export const UserProvider = props => {
-    const url = apiConfig
     const [userInfo, setUserInfo] = useState({
         user_name: '',
         user_email: '',
@@ -22,7 +21,7 @@ export const UserProvider = props => {
                   token: localStorage.token
                 }
             }
-            const response = await axios(`${url}/users/userinfo`, config)
+            const response = await axios(`${API_BASE_URL}/users/userinfo`, config)
             
             setUserInfo(response.data)
         } catch (err) {

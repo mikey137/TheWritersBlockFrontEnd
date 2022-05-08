@@ -11,6 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import axios from 'axios';
+import {API_BASE_URL} from '../Constants'
 
 export default function Register({setIsAuthenticated}){
     const [inputs, setInputs] = useState({
@@ -58,7 +59,7 @@ export default function Register({setIsAuthenticated}){
     const checkIsUserNameTaken = async () => {
         try {
             const body = { name }
-            const {data} = await axios.post("/auth/checkusername", body)
+            const {data} = await axios.post(`${API_BASE_URL}/auth/checkusername`, body)
             setIsUserNameTaken(data)
         } catch (err) {
             console.error(err)
@@ -68,7 +69,7 @@ export default function Register({setIsAuthenticated}){
     const checkIsEmailTaken = async () => {
         try {
             const body = { email }
-            const { data } = await axios.post("/auth/checkemail", body) 
+            const { data } = await axios.post(`${API_BASE_URL}/auth/checkemail`, body) 
             setIsEmailTaken(data)
         } catch (err) {
             console.error(err)
@@ -139,7 +140,7 @@ export default function Register({setIsAuthenticated}){
         if(isFormComplete){
             try {
                 const body = { email, password, name} 
-                const { data } = await axios.post("/auth/register", body)
+                const { data } = await axios.post(`${API_BASE_URL}/auth/register`, body)
      
                 localStorage.setItem("token", data.token)
                 setIsAuthenticated(true)

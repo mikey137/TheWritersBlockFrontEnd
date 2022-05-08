@@ -10,6 +10,7 @@ import Switch from '@mui/material/Switch';
 import CloudinaryWidget from "./CloudinaryWidget";
 import axios from "axios";
 import { UserContext } from '../UserContext';
+import { API_BASE_URL } from "../Constants";
 
 
 
@@ -64,7 +65,7 @@ export default function CreateStory() {
         }
       }
       const body = {isStoryPublic, storyTitle, storyText, photoUrl, dateCreated, userName}
-      const story = await axios.post("./stories/createstory", body, config)
+      const story = await axios.post(`${API_BASE_URL}./stories/createstory`, body, config)
       setStoryId(story.data)
     } catch (err) {
       console.error(err)

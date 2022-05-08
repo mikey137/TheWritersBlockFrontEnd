@@ -109,7 +109,7 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
-              href="/texteditor"
+              href="/createstory"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >

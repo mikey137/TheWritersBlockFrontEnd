@@ -2,6 +2,7 @@ import React,{useEffect, useRef} from 'react'
 import IconButton from '@mui/material/IconButton';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import axios from 'axios';
+import { API_BASE_URL } from '../Constants';
 
 export default function CloudinaryProfilePhotoWidget({canUserEdit, setUserProfileInfo}){
     let myWidget = useRef()
@@ -19,7 +20,7 @@ export default function CloudinaryProfilePhotoWidget({canUserEdit, setUserProfil
                 }
             }
             const data = {user_photo: `${newUrl}`} 
-            const updatedUserPhoto = await axios.put("/users/userphoto", data, config)
+            const updatedUserPhoto = await axios.put(`${API_BASE_URL}/users/userphoto`, data, config)
             console.log(updatedUserPhoto)
         } catch(err){
             console.error(err)
