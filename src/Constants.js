@@ -1,11 +1,3 @@
-const prod = {
-    url: {
-     API_URL: 'https://writersblock1.herokuapp.com'
-     }
-   };
-   const dev = {
-    url: {
-     API_URL: 'http://localhost:5000'
-    }
-   };
-   export const apiConfig = process.env.NODE_ENV === 'development' ? dev : prod;
+export const apiConfig = process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_API_URL : process.env.REACT_APP_PROD_API_URL;
+
+console.log(apiConfig)

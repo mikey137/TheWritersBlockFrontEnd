@@ -19,7 +19,7 @@ import axios from 'axios';
 import { apiConfig } from './Constants'
 
 function App() {
-  const url = apiConfig.url.API_URL
+  const url = apiConfig
   const [isAuthenticated, setIsAuthenticated] = useState("")
 
   async function isAuth(){

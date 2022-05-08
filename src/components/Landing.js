@@ -5,12 +5,13 @@ import StoryPreview from './StoryPreview';
 import { apiConfig } from '../Constants'
 
 export default function Landing(){
-    const url = apiConfig.url.API_URL
+    const url = apiConfig
     const [mostViewedStories, setMostViewededStories] = useState([])
 
     const getMostViewedStories = async () => {
         try {
-            const stories = await axios(`${url}/stories/mostviewed`)
+            console.log(url)
+            const stories = await axios.get(`${url}/stories/mostviewed`)
 
             setMostViewededStories(stories.data)
         } catch (err) {

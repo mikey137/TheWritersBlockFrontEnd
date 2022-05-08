@@ -5,7 +5,7 @@ import { apiConfig } from "./Constants"
 export const UserContext = createContext()
 
 export const UserProvider = props => {
-    const url = apiConfig.url.API_URL
+    const url = apiConfig
     const [userInfo, setUserInfo] = useState({
         user_name: '',
         user_email: '',

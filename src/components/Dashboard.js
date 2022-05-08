@@ -44,7 +44,7 @@ function a11yProps(index) {
   
 
 export default function Dashboard(){
-    const url = apiConfig.url.API_URL
+    const url = apiConfig
     const userContext = useContext(UserContext)
     const [value, setValue] = useState(0);
     const [myStories, setMyStories] = useState([])
