@@ -61,6 +61,7 @@ export default function Register({setIsAuthenticated}){
             const body = { name }
             const {data} = await axios.post(`${API_BASE_URL}/auth/checkusername`, body, {withCredentials: true})
             setIsUserNameTaken(data)
+            console.log(data)
         } catch (err) {
             console.error(err)
         }
