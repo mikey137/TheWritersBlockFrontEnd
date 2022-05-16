@@ -339,6 +339,8 @@ body {
 @media (min-width: 992px) {
   .login-img-container {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50vw;
     height: 100vh;
     background-image: linear-gradient(
@@ -350,6 +352,11 @@ body {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+
+  .login-img-container h1 {
+    color: white;
+    text-transform: uppercase;
   }
 
   .login-form-container {

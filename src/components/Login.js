@@ -55,7 +55,9 @@ export default function Login({setIsAuthenticated}){
     return(
         <Fragment>
             <div className="login-page-outer">
-                <div className="login-img-container"></div>
+                <div className="login-img-container">
+                    <h1>Find Your Inspiration!</h1>
+                </div>
                 <div className="login-form-container">
                     <h1>The Writers Block</h1>
                     <h4>Join Us Today</h4>
