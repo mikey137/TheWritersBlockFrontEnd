@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import StoryPreview from './StoryPreview';
 import CloudinaryWidgetCoverPhoto from './CloudinaryWidgetCoverPhoto'
 import CloudinaryProfilePhotoWidget from './CloudinaryProfilePhotoWidget'
+import avatar from '../images/pngegg.png'
 import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../Constants';
@@ -15,7 +16,7 @@ export default function PublicProfile({isAuthenticated}){
 
     const [userProfileInfo, setUserProfileInfo] = useState({
         user_name: '',
-        user_photo: '',
+        user_photo: {avatar},
         user_cover_photo: '',
         about_user: ''
     })
@@ -134,7 +135,7 @@ export default function PublicProfile({isAuthenticated}){
 
     return(
         <Fragment>
-            <div className="margin-top" style={{marginTop: '3.5rem'}}></div>
+            <div className="margin-top" style={{marginTop: '4 rem'}}></div>
             <div 
                 className="profile-cover-photo"
                 style={{backgroundImage: `url(${userProfileInfo.user_cover_photo})`}}
