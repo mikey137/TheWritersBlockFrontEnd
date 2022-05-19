@@ -95,26 +95,32 @@ export default function Dashboard(){
         <div className = "dashboard-container">
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
                     <Tab label="My Stories" {...a11yProps(0)} />
                     <Tab label="Most Viewed Stories" {...a11yProps(1)} />
                     <Tab label="Newest Stories" {...a11yProps(2)} />
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    {myStories.map(story => (
-                    <StoryPreview story = {story} />
-                    ))} 
+                    <div className="stories-wrapper">
+                        {myStories.map(story => (
+                            <StoryPreview story = {story} />
+                        ))} 
+                    </div>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    {mostViewedStories.map(story => (
-                    <StoryPreview story = {story} />
-                    ))} 
+                    <div className="stories-wrapper">
+                        {mostViewedStories.map(story => (
+                            <StoryPreview story = {story} />
+                        ))} 
+                    </div>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    {newestStories.map(story => (
-                        <StoryPreview story = {story} />
-                    ))} 
+                    <div className="stories-wrapper">
+                        {newestStories.map(story => (
+                            <StoryPreview story = {story} />
+                        ))} 
+                    </div>
                 </TabPanel>
             </Box>
         </div>

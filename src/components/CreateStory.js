@@ -32,10 +32,6 @@ export default function CreateStory() {
   let path = `/story/${storyId}`
   if(storyId !== ''){navigate(path)} 
 
-  const toggleIsStoryPublic = () => {
-    setIsStoryPublic(!isStoryPublic)
-  } 
-
   const changeStoryTitle = (e) => {
     setStoryTitle(e.target.value)
   } 
@@ -74,39 +70,35 @@ export default function CreateStory() {
 
   return (
     <div className = "create-story-container">
-        <FormControlLabel 
-          control={<Switch defaultChecked onChange={toggleIsStoryPublic}/>} 
-          label="Share Story Publicly" 
-        />
-        <CloudinaryWidget setPhotoUrl = {setPhotoUrl} />
-        <TextField 
-            onChange={e => changeStoryTitle(e)}
-            id="outlined-basic" 
-            label="Story Title" 
-            variant="outlined" 
-            sx={{ m: 1, width: '25ch' }}
-        />
-        <div className = 'text-editor'>
-            <Editor
-            editorState={editorState}
-            onEditorStateChange={setEditorState}
-            />
-        </div>
-        <div className="create-story-btn-container">
-            <Button 
-              onClick={submitStory}
-              variant="contained" 
-              sx={{ width: 250}}
-            >
-                Submit Story
-            </Button>
-            <Button 
-                variant="outlined"
-                sx={{ mt: 3, width: 250}}
-            >
-                Cancel
-            </Button>
-        </div>
+      <CloudinaryWidget photoUrl = {photoUrl} setPhotoUrl = {setPhotoUrl} />
+      <TextField 
+          onChange={e => changeStoryTitle(e)}
+          id="outlined-basic" 
+          label="Story Title" 
+          variant="outlined" 
+          sx={{ m: 1, width: '25ch' }}
+      />
+      <div className = 'text-editor'>
+          <Editor
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+          />
+      </div>
+      <div className="create-story-btn-container">
+        <Button 
+          onClick={submitStory}
+          variant="contained" 
+          sx={{ width: 250}}
+        >
+          Submit Story
+        </Button>
+        <Button 
+          variant="outlined"
+          sx={{ mt: 3, width: 250}}
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }

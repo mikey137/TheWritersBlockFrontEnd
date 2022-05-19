@@ -78,6 +78,13 @@ body {
   flex-wrap: wrap;
 }
 
+.stories-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 /* LOGIN PAGE */
 
 .login-page-outer {

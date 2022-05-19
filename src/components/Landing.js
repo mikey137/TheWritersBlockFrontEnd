@@ -35,9 +35,11 @@ export default function Landing(){
             </div>
             <div className="landing-content">
                 <h1>Most Viewed Stories</h1>
-               {mostViewedStories.map(story => (
-                   <StoryPreview key = {story.story_id} story = {story} />
-               ))} 
+                <div className="stories-wrapper">
+                    {mostViewedStories.map(story => (
+                        <StoryPreview key = {story.story_id} story = {story} />
+                    ))} 
+                </div>
             </div>
         </Fragment>
     )

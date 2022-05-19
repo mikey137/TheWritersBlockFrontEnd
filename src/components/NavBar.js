@@ -89,6 +89,16 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link 
+                  href= "/dashboard"
+                  textAlign="center"
+                  color="inherit" 
+                  underline="none"
+                >
+                  My Dashboard
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link 
                   href= "/createstory"
                   textAlign="center"
                   color="inherit" 
@@ -108,6 +118,13 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
             {userContext[0].user_name}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Button
+              href="/dashboard"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              My Dashboard
+            </Button>
             <Button
               href="/createstory"
               onClick={handleCloseNavMenu}
