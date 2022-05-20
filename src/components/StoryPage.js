@@ -1,16 +1,20 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState, useContext} from 'react'
 import { useParams } from 'react-router-dom';
 import { convertFromRaw } from "draft-js";
 import {convertToHTML} from "draft-convert"
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import {API_BASE_URL} from '../Constants'
+import { UserContext } from '../UserContext';
 
 export default function StoryPage(){
     const  {id}   = useParams()
-    
+    const userContext = useContext(UserContext)
+    const [canUserEdit, setCanUserEdit] = useState(false)
     const [storyInfo, setStoryInfo] = useState({
         user_id: '',
         story_text: '',
@@ -34,9 +38,10 @@ export default function StoryPage(){
     const getStoryInfo = async () => {
         try{
             const response = await axios(`${API_BASE_URL}/stories/getstory/${id}`) 
-            console.log(response.data)
+            
             const convertedStoryText = (convertToHTML(convertFromRaw(JSON.parse(response.data.story_text))))
             setStoryInfo({
+                story_id: response.data.story_id,
                 user_id: response.data.user_id,
                 story_text: convertedStoryText,
                 story_title: response.data.story_title,
@@ -63,6 +68,14 @@ export default function StoryPage(){
             console.error(err)
         }
     }
+
+    useEffect(() => {
+        if(`${userContext[0].user_id}` === storyInfo.user_id){
+            setCanUserEdit(true)
+        }else{
+            setCanUserEdit(false)
+        }
+    },[userContext, storyInfo])
 
     useEffect(() => {
         getStoryInfo()
@@ -99,6 +112,14 @@ export default function StoryPage(){
                             </IconButton>
                         </div>
                     </div>
+                    <Button 
+                        href={`/createstory/${storyInfo.story_id}`}
+                        variant="contained" 
+                        startIcon={<EditIcon />}
+                        id = {canUserEdit ? 'edit-btn' : 'display-none'}
+                    >
+                        Edit Story
+                    </Button>
                 </div>
             </div>
             <div 

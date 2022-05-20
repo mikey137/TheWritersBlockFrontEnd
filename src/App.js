@@ -79,6 +79,10 @@ function App() {
             path= "/createstory"
             element ={isAuthenticated !== false ? <CreateStory /> : <Navigate to = "/login" /> }
           />
+          <Route
+            path= "/createstory/:id"
+            element ={isAuthenticated !== false ? <CreateStory /> : <Navigate to = "/login" /> }
+          />
         </Routes>
       </BrowserRouter>
       </UserProvider>

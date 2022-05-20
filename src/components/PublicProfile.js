@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import StoryPreview from './StoryPreview';
 import CloudinaryWidgetCoverPhoto from './CloudinaryWidgetCoverPhoto'
 import CloudinaryProfilePhotoWidget from './CloudinaryProfilePhotoWidget'
-import avatar from '../images/pngegg.png'
 import { UserContext } from '../UserContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../Constants';
@@ -16,7 +15,7 @@ export default function PublicProfile({isAuthenticated}){
 
     const [userProfileInfo, setUserProfileInfo] = useState({
         user_name: '',
-        user_photo: {avatar},
+        user_photo: '',
         user_cover_photo: '',
         about_user: ''
     })
@@ -207,9 +206,11 @@ export default function PublicProfile({isAuthenticated}){
                 </div>
                 <h3>Checkout My Lastest Work</h3>
                 <div className="story-container">
-                    {userStories.map(story => (
-                    <StoryPreview story = {story} />
-                    ))} 
+                    <div className="stories-wrapper">
+                        {userStories.map(story => (
+                            <StoryPreview story = {story} />
+                        ))} 
+                    </div>
                 </div>  
             </div>
         </Fragment>
