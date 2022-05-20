@@ -91,7 +91,6 @@ export default function CreateStory() {
   }
 
   const submitEdits = async() => {
-    console.log('test')
     try {
       const config = {
         headers: {

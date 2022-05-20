@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import {API_BASE_URL} from '../Constants'
 import { UserContext } from '../UserContext';
+import DeleteStoryDialog from './DeleteStoryDialog';
 
 export default function StoryPage(){
     const  {id}   = useParams()
@@ -120,6 +121,7 @@ export default function StoryPage(){
                     >
                         Edit Story
                     </Button>
+                    <DeleteStoryDialog canUserEdit = {canUserEdit} id = {id}/>
                 </div>
             </div>
             <div 

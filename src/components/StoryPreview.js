@@ -1,6 +1,4 @@
 import React, {Fragment, useEffect, useState} from 'react'
-import { convertFromRaw } from "draft-js";
-import {convertToHTML} from "draft-convert"
 import Link from '@mui/material/Link';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
@@ -8,9 +6,8 @@ export default function StoryPreview({story}){
     const [storyPreview, setStoryPreview] = useState('')
 
     const handleConvertStoryText = (unconvertedText) => {
-        const convertedText = convertToHTML(convertFromRaw(JSON.parse(unconvertedText)))
-        const startOfParagraph = convertedText.indexOf('<p>')+3
-        const subString = convertedText.substring(startOfParagraph, startOfParagraph + 100)
+        const fullText = JSON.parse(unconvertedText).blocks[0].text
+        const subString = fullText.substring(0, 100)
         setStoryPreview(subString)
     }
 
