@@ -134,7 +134,6 @@ export default function PublicProfile({isAuthenticated}){
 
     return(
         <Fragment>
-            <div className="margin-top" style={{marginTop: '4 rem'}}></div>
             <div 
                 className="profile-cover-photo"
                 style={{backgroundImage: `url(${userProfileInfo.user_cover_photo})`}}
@@ -178,12 +177,11 @@ export default function PublicProfile({isAuthenticated}){
                         <TextField
                             id= "outlined-multiline-flexible"
                             name="about_user"
-                            sx= {{width: "90vw"}}
+                            sx= {{width: "40vw"}}
                             label="Edit About Me"
                             multiline
                             value={userProfileInfo.about_user}
-                            onChange = {handleChange}
-                            
+                            onChange = {handleChange}   
                         />
                         </div>
                         <div className="edit-about-btn-container">

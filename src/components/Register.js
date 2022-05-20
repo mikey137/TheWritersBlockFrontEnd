@@ -27,7 +27,6 @@ export default function Register({setIsAuthenticated}){
     const [isEmailValid, setIsEmailValid] = useState(false)
     const [isPasswordStrong, setIsPassWordStrong] = useState(false)
     const [doPasswordsMatch, setDoPasswordsMatch] = useState(false)
-    const [isFormComplete, setIsFormComplete] = useState(false)
 
     const {email, password, verifyPassword, name } = inputs
 
@@ -119,6 +118,7 @@ export default function Register({setIsAuthenticated}){
     },[inputs.verifyPassword][inputs.password])
 
     const checkFormCompleteness = () => {
+        console.log('test')
         if(
             inputs.name !== "" &&
             isUserNameTaken === false &&
@@ -128,16 +128,15 @@ export default function Register({setIsAuthenticated}){
             isPasswordStrong === true &&
             inputs.password === inputs.verifyPassword
         ){
-            setIsFormComplete(true)
+            return true
         }else{
-            setIsFormComplete(false)
+            return false
         }
     }
 
     const onSubmitForm = async (e) => {
         e.preventDefault()
-        checkFormCompleteness()
-        if(isFormComplete){
+        if(checkFormCompleteness){
             try {
                 const body = { email, password, name} 
                 const { data } = await axios.post(`${API_BASE_URL}/auth/register`, body)

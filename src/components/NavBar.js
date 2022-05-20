@@ -36,11 +36,10 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
   };
 
   const logout = (e) => {
-    e.preventDefault()
     localStorage.removeItem("token")
     setIsAuthenticated(false)
     setAnchorElUser(null);
-}
+  }
 
   return (
     <AppBar 
@@ -157,7 +156,14 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
               onClose={handleCloseUserMenu}
             >
               <MenuItem onClick={(e) => logout(e)}>
-                <Typography textAlign="center">Logout</Typography>
+                <Link 
+                  href="/login"
+                  textAlign="center" 
+                  color="inherit" 
+                  underline="none"
+                >
+                  Logout
+                </Link>
               </MenuItem>
               <MenuItem>
                 <Link 
