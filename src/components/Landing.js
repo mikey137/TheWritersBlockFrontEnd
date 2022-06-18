@@ -25,7 +25,7 @@ export default function Landing(){
         <Fragment>
             <div className="landing-hero">
                 <div className="landing-content-container">
-                    <h1>The Writers Block</h1>
+                    <h1>The Writers' Block</h1>
                     <p>Where Ideas Come To Grow</p>
                     <div className="landing-button-container">
                         <Button href="/login" size="medium" variant="contained">LOGIN</Button>

@@ -54,7 +54,7 @@ const Navbar = ({isAuthenticated, setIsAuthenticated}) => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            Writers Block
+            Writers' Block
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

@@ -156,7 +156,7 @@ export default function Register({setIsAuthenticated}){
                     <h1>Find Your Inspiration!</h1>
                 </div>
                 <div className="login-form-container">
-                    <h1>The Writers Block</h1>
+                    <h1>The Writers' Block</h1>
                     <h4>Join Us Today</h4>
                     <h4>and Bring Your Ideas to Life!</h4>
                     <p>Enter your username, email, and password to register</p>
