@@ -10,8 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import axios from 'axios';
-import {API_BASE_URL} from '../Constants'
+import { apiProvider } from '../services/apiProvider';
 
 export default function Register({setIsAuthenticated}){
     const [inputs, setInputs] = useState({
@@ -27,6 +26,7 @@ export default function Register({setIsAuthenticated}){
     const [isEmailValid, setIsEmailValid] = useState(false)
     const [isPasswordStrong, setIsPassWordStrong] = useState(false)
     const [doPasswordsMatch, setDoPasswordsMatch] = useState(false)
+    const [isFormComplete, setIsFormComplete] = useState(false)
 
     const {email, password, verifyPassword, name } = inputs
 
@@ -55,24 +55,14 @@ export default function Register({setIsAuthenticated}){
         event.preventDefault();
     };
 
-    const checkIsUserNameTaken = async () => {
-        try {
-            const body = { name }
-            const {data} = await axios.post(`${API_BASE_URL}/auth/checkusername`, body)
-            setIsUserNameTaken(data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleCheckIsUserNameTaken = async (userName) => {
+        const bool = await apiProvider.checkIsUserNameTaken(userName)
+        setIsUserNameTaken(bool)
     }
 
-    const checkIsEmailTaken = async () => {
-        try {
-            const body = { email }
-            const { data } = await axios.post(`${API_BASE_URL}/auth/checkemail`, body) 
-            setIsEmailTaken(data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleCheckIsEmailTaken = async (userEmail) => {
+        const bool= await apiProvider.checkIsEmailTaken(userEmail)
+        setIsEmailTaken(bool)
     }
 
     const checkIsEmailValid = () => {
@@ -99,13 +89,39 @@ export default function Register({setIsAuthenticated}){
         }
     }
 
+    const checkFormCompleteness = () => {
+        if(
+            inputs.name !== "" &&
+            isUserNameTaken === false &&
+            inputs.email !== "" &&
+            isEmailTaken === false &&
+            isEmailValid === true &&
+            isPasswordStrong === true &&
+            inputs.password === inputs.verifyPassword
+        ){
+            setIsFormComplete(true)
+        }else{
+            setIsFormComplete(false)
+        }
+    }
+
+    const onSubmitForm = async (e) => {
+        e.preventDefault()
+        if(checkFormCompleteness){
+            const body = { email, password, name} 
+            const token = await apiProvider.registerNewUser(body)
+            localStorage.setItem("token", token)
+            setIsAuthenticated(true)
+        }
+    }
+
     useEffect(() => {
-        checkIsUserNameTaken()
+        handleCheckIsUserNameTaken(inputs.name)
     },[inputs.name])
 
     useEffect(() => {
         checkIsEmailValid()
-        checkIsEmailTaken()
+        handleCheckIsEmailTaken(inputs.email)   
     },[inputs.email])
 
 
@@ -117,37 +133,9 @@ export default function Register({setIsAuthenticated}){
         checkIfPasswordsMatch()
     },[inputs.verifyPassword][inputs.password])
 
-    const checkFormCompleteness = () => {
-        console.log('test')
-        if(
-            inputs.name !== "" &&
-            isUserNameTaken === false &&
-            inputs.email !== "" &&
-            isEmailTaken === false &&
-            isEmailValid === true &&
-            isPasswordStrong === true &&
-            inputs.password === inputs.verifyPassword
-        ){
-            return true
-        }else{
-            return false
-        }
-    }
-
-    const onSubmitForm = async (e) => {
-        e.preventDefault()
-        if(checkFormCompleteness){
-            try {
-                const body = { email, password, name} 
-                const { data } = await axios.post(`${API_BASE_URL}/auth/register`, body)
-     
-                localStorage.setItem("token", data.token)
-                setIsAuthenticated(true)
-             } catch (err) {
-                 console.error(err.message)
-             }
-        }
-    }
+    useEffect(() => {
+        checkFormCompleteness()
+    }, [inputs])
 
     return(
         <Fragment>
@@ -259,6 +247,7 @@ export default function Register({setIsAuthenticated}){
                         </FormHelperText>
                         </FormControl>
                         <Button
+                            disabled = {!isFormComplete}
                             type="submit"
                             fullWidth
                             variant="contained"

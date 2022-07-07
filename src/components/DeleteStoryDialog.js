@@ -6,13 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
-import {API_BASE_URL} from '../Constants'
+import { apiProvider } from '../services/apiProvider';
 
 export default function DeleteStoryDialog({canUserEdit, id}) {
     const [open, setOpen] = useState(false);
-    const story_id = {id}
-
+    
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -21,21 +19,9 @@ export default function DeleteStoryDialog({canUserEdit, id}) {
         setOpen(false);
     };
 
-    const handleDeleteStory = async() => {
-        try {
-            const config = {
-                data: {id},
-                headers: {
-                    "Content-Type": "application/json",
-                    token: localStorage.token
-                }
-            }
-            const storyToDelete = await axios.delete(`${API_BASE_URL}/stories/deletestory`, config)
-            console.log(storyToDelete)
-            handleClose()
-        } catch (err) {
-            console.error(err)
-        } 
+    const handleDeleteStory = async (storyId) => {
+        await apiProvider.deleteStory(storyId)
+        handleClose()
     }
 
     return (
@@ -66,7 +52,7 @@ export default function DeleteStoryDialog({canUserEdit, id}) {
                 </DialogContent>
                 <DialogActions>
                     <Button 
-                        onClick={handleDeleteStory}
+                        onClick={() => handleDeleteStory(id)}
                         href="/dashboard"
                     >
                         Delete

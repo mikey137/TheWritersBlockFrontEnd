@@ -1,24 +1,18 @@
 import React, {Fragment, useEffect, useState} from 'react'
 import Button from '@mui/material/Button';
-import axios from 'axios'
 import StoryPreview from './StoryPreview';
-import { API_BASE_URL } from '../Constants'
+import { apiProvider } from '../services/apiProvider'
 
 export default function Landing(){
     const [mostViewedStories, setMostViewededStories] = useState([])
 
-    const getMostViewedStories = async () => {
-        try {
-            const stories = await axios.get(`${API_BASE_URL}/stories/mostviewed`)
-            
-            setMostViewededStories(stories.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetMostViewedStories = async () => {
+        const stories = await apiProvider.getMostViewedStories()
+        setMostViewededStories(stories)
     }
 
     useEffect(() => {
-        getMostViewedStories()
+        handleGetMostViewedStories()
     },[])
 
     return(

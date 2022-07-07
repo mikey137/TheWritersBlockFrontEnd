@@ -1,30 +1,13 @@
 import React,{useEffect, useRef} from 'react'
 import IconButton from '@mui/material/IconButton';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import axios from 'axios';
-import { API_BASE_URL } from '../Constants';
+import { apiProvider } from '../services/apiProvider';
 
 export default function CloudinaryProfilePhotoWidget({canUserEdit, setUserProfileInfo}){
     let myWidget = useRef()
 
     const openMyWidget = () => {
         myWidget.current.open()
-    }
-
-    const updateUserPhoto = async (newUrl) => {
-        try{
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    token: localStorage.token 
-                }
-            }
-            const data = {user_photo: `${newUrl}`} 
-            const updatedUserPhoto = await axios.put(`${API_BASE_URL}/users/userphoto`, data, config)
-            console.log(updatedUserPhoto)
-        } catch(err){
-            console.error(err)
-        }
     }
 
     useEffect(() => {
@@ -37,7 +20,7 @@ export default function CloudinaryProfilePhotoWidget({canUserEdit, setUserProfil
                     setUserProfileInfo(userProfileInfo => ({
                         ...userProfileInfo, user_photo: result.info.url
                     }))
-                    updateUserPhoto(result.info.url)
+                    apiProvider.updateUserPhoto(result.info.url)
                 }
             }
         ) 

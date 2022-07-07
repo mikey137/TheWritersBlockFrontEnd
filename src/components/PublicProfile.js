@@ -6,8 +6,7 @@ import StoryPreview from './StoryPreview';
 import CloudinaryWidgetCoverPhoto from './CloudinaryWidgetCoverPhoto'
 import CloudinaryProfilePhotoWidget from './CloudinaryProfilePhotoWidget'
 import { UserContext } from '../UserContext';
-import axios from 'axios';
-import { API_BASE_URL } from '../Constants';
+import { apiProvider } from '../services/apiProvider';
 
 export default function PublicProfile({isAuthenticated}){
     const userContext = useContext(UserContext)
@@ -35,97 +34,48 @@ export default function PublicProfile({isAuthenticated}){
         setIsEditingAbout(!isEditingAbout)
     }
 
-    const getUserInfo = async () => {
-        try {
-           const response = await axios(`${API_BASE_URL}/users/publicuserinfo/${id}`)
-           setUserProfileInfo(response.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetUserInfo = async (userId) => {
+        const info = await apiProvider.getUserInfo(userId)
+        setUserProfileInfo(info)
     }
 
-    const getUserStories = async () => {
-        try {
-            const stories = await axios(`${API_BASE_URL}/stories/mystories/${id}`)
-            setUserStories(stories.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetUserStories = async (userId) => {
+        const stories = await apiProvider.getMyStories(userId)
+        setUserStories(stories)
     }
 
-    const editAboutUser = async () => {
-        try{
-            const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  token: localStorage.token 
-                }
-            }
-            const data = {about_user: `${userProfileInfo.about_user }`} 
-            const updatedAboutText = await axios.put(`${API_BASE_URL}/users/userabout`, data, config)
-            console.log(updatedAboutText)
-        } catch(err){
-            console.error(err)
-        }
+    const handleUpdateAboutMe = async (aboutMe) => {    
+        await apiProvider.updateAboutMe(aboutMe)
     }
 
-    const handleFollowUser = async () => {
-        try {
-            const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  token: localStorage.token 
-                }
-            }
-            
-            const data = {userToFollow: id}
-            const followUser = await axios.post(`${API_BASE_URL}/followers/followuser`, data, config)
-
-            console.log(followUser)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleFollowUser = async (userId) => { 
+        await apiProvider.followUser(userId)
+        setIsFollowing(true)
     }
 
-    const checkIfFollowing = async () => {
-        try {
-            const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  token: localStorage.token 
-                }
-            }
-            const data = {followee: id}
-            const bool = await axios.post(`${API_BASE_URL}/followers/isfollowing`, data, config)
-            
-            setIsFollowing(bool.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const checkIfFollowing = async (userId) => {
+        const bool = await apiProvider.checkIfFollowing(userId)
+        setIsFollowing(bool)
     }
 
-    const getNumberOfFollowers = async () => {
-        try {
-            const  followers = await axios(`${API_BASE_URL}/followers/numberoffollowers/${id}`)
-            setNumberOfFollowers(followers.data.rows[0].count)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetNumberOfFollowers = async (userId) => {
+        const  followersCount = await apiProvider.getNumberOfFollowers(userId)
+        setNumberOfFollowers(followersCount)
     }
 
     const handleSubmit = () => {
-        editAboutUser()
+        handleUpdateAboutMe(userProfileInfo.about_user)
         toggleIsEditing()
     }
 
     useEffect(() => {
-        getUserInfo()
-        getUserStories()
-        getNumberOfFollowers()
+        handleGetUserInfo(id)
+        handleGetUserStories(id)
+        handleGetNumberOfFollowers(id)
     },[])
 
     useEffect(() => {
-        checkIfFollowing()
+        checkIfFollowing(id)
         if(userContext[0].user_id === id){
             setCanUserEdit(true)
         }
@@ -159,7 +109,7 @@ export default function PublicProfile({isAuthenticated}){
                         <Button 
                             id = { !canUserEdit ? "follow-btn" : "display-none"}
                             variant="outlined"
-                            onClick={handleFollowUser}
+                            onClick={() => handleFollowUser(id)}
                             disabled={!isAuthenticated}
                         >
                             {isFollowing ? "Following" : "Follow"}
@@ -206,7 +156,7 @@ export default function PublicProfile({isAuthenticated}){
                 <div className="story-container">
                     <div className="stories-wrapper">
                         {userStories.map(story => (
-                            <StoryPreview story = {story} />
+                            <StoryPreview story = {story} key = {story.story_id} />
                         ))} 
                     </div>
                 </div>  

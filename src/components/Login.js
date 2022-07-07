@@ -10,8 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import axios from 'axios';
-import { API_BASE_URL } from '../Constants'
+import { apiProvider } from '../services/apiProvider';
 
 
 export default function Login({setIsAuthenticated}){
@@ -32,23 +31,18 @@ export default function Login({setIsAuthenticated}){
           ...inputs,
           showPassword: !inputs.showPassword,
         });
-      };
+    };
     
-      const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-      };
+    const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+    };
 
-    const onSubmitForm = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
-        try {
-            const body = { email, password }
-            const { data } = await axios.post(`${API_BASE_URL}/auth/login`, body)
-            localStorage.setItem("token", data.token)
-            if(data.token){
-                setIsAuthenticated(true)
-            }
-        } catch (err) {
-            console.log(err.message)
+        const token = await apiProvider.login(email, password)
+        localStorage.setItem("token", token)
+        if(token){
+            setIsAuthenticated(true)
         }
     }
     
@@ -65,7 +59,7 @@ export default function Login({setIsAuthenticated}){
                     <Box 
                         component="form" 
                         noValidate 
-                        onSubmit={e => onSubmitForm(e)} 
+                        onSubmit={e => handleLogin(e)} 
                         sx={{ mt: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                     >
                         <TextField 

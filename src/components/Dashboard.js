@@ -5,12 +5,10 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { UserContext } from '../UserContext';
-import axios from 'axios';
 import StoryPreview from './StoryPreview';
-import { API_BASE_URL } from '../Constants'
+import { apiProvider } from '../services/apiProvider';
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+function TabPanel({children, value, index}) {
   
     return (
       <div
@@ -18,7 +16,6 @@ function TabPanel(props) {
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
-        {...other}
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
@@ -47,48 +44,35 @@ export default function Dashboard(){
     const userContext = useContext(UserContext)
     const [value, setValue] = useState(0);
     const [myStories, setMyStories] = useState([])
-    const [mostViewedStories, setMostViewededStories] = useState([])
-    const [newestStories, setNewestStories] = useState([])
+    const [mostViewedStories, setMostViewededStories] = useState()
+    const [newestStories, setNewestStories] = useState()
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     
-
-    const getMyStories = async () => {
-        try {
-            const stories = await axios(`${API_BASE_URL}/stories/mystories/${userContext[0].user_id}`)
-            setMyStories(stories.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetMyStories = async (userId) => {
+        const stories = await apiProvider.getMyStories(userId)
+        setMyStories(stories)
     }
 
-    const getMostViewedStories = async () => {
-        try {
-            const stories = await axios(`${API_BASE_URL}/stories/mostviewed`)
-            setMostViewededStories(stories.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetMostViewedStories = async () => {
+        const stories = await apiProvider.getMostViewedStories()
+        setMostViewededStories(stories)
     }
 
-    const getNewestStories = async () => {
-        try {
-            const stories = await axios(`${API_BASE_URL}/stories/neweststories`)
-            setNewestStories(stories.data)
-        } catch (err) {
-            console.error(err)
-        }
+    const handleGetNewestStories = async () => {
+        const stories = await apiProvider.getNewestStories()
+        setNewestStories(stories)
     }
 
     useEffect(() => {
-        getMostViewedStories()
-        getNewestStories()
+        handleGetMostViewedStories()
+        handleGetNewestStories()
     },[])
 
     useEffect(() => {
-        getMyStories()
+        handleGetMyStories(userContext[0].user_id)
     },[userContext])
 
     return(
@@ -103,22 +87,22 @@ export default function Dashboard(){
                 </Box>
                 <TabPanel value={value} index={0}>
                     <div className="stories-wrapper">
-                        {myStories.map(story => (
-                            <StoryPreview story = {story} />
+                        {myStories?.map(story => (
+                            <StoryPreview story = {story} key = {story.story_id} />
                         ))} 
                     </div>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <div className="stories-wrapper">
-                        {mostViewedStories.map(story => (
-                            <StoryPreview story = {story} />
+                        {mostViewedStories?.map(story => (
+                            <StoryPreview story = {story} key = {story.story_id}/>
                         ))} 
                     </div>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <div className="stories-wrapper">
-                        {newestStories.map(story => (
-                            <StoryPreview story = {story} />
+                        {newestStories?.map(story => (
+                            <StoryPreview story = {story} key = {story.story_id}/>
                         ))} 
                     </div>
                 </TabPanel>

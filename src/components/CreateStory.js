@@ -2,15 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw, convertFromRaw, ContentState} from "draft-js";
-import {convertToHTML} from "draft-convert"
+import { EditorState, convertToRaw, convertFromRaw} from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CloudinaryWidget from "./CloudinaryWidget";
-import axios from "axios";
 import { UserContext } from '../UserContext';
-import { API_BASE_URL } from "../Constants";
+import { apiProvider } from "../services/apiProvider";
 
 export default function CreateStory() {
   const  {id}   = useParams()
@@ -47,16 +45,27 @@ export default function CreateStory() {
     setDateCreated(date)
   }
 
-  const getStoryInfo = async () => {
-    try{
-      const {data} = await axios(`${API_BASE_URL}/stories/getstory/${id}`) 
-      setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(data.story_text))))
-      setStoryTitle(data.story_title)
-      setPhotoUrl(data.photo_url)
-      setDateCreated(data.date_created)
-      setStoryId(data.story_id)
-    } catch (err) {
-      console.error(err.message)
+  const handleGetStoryInfo = async () => {
+    const story = await apiProvider.getStoryInfo(id)
+    setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(story.story_text))))
+    setStoryTitle(story.story_title)
+    setPhotoUrl(story.photo_url)
+    setDateCreated(story.date_created)
+    setStoryId(story.story_id)
+  }
+
+  const handleSubmitStory = async() => {
+    const body = {isStoryPublic, storyTitle, storyText, photoUrl, dateCreated, userName}
+    const story = await apiProvider.submitStory(body)
+    setStoryId(story.data)
+    setIsStorySubmitted(true)
+  }
+
+  const handleSubmitEdits = async() => {
+    const body = {storyTitle, storyText, photoUrl, storyId}
+    const {data} = await apiProvider.submitEdits(body)
+    if(data === 'story updated'){
+      setIsStorySubmitted(true)
     }
   }
 
@@ -66,48 +75,11 @@ export default function CreateStory() {
 
   useEffect(() => {
     if(id){
-      getStoryInfo()
+      handleGetStoryInfo()
     } else{
       createTimeStamp()
     }
   },[])
-
-  const submitStory = async() => {
-    console.log('test')
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.token
-        }
-      }
-      const body = {isStoryPublic, storyTitle, storyText, photoUrl, dateCreated, userName}
-      const story = await axios.post(`${API_BASE_URL}/stories/createstory`, body, config)
-      setStoryId(story.data)
-      setIsStorySubmitted(true)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const submitEdits = async() => {
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.token
-        }
-      }
-      const body = {storyTitle, storyText, photoUrl, storyId}
-      const edits = await axios.put(`${API_BASE_URL}/stories/editstory`, body, config)
-
-      if(edits.data === 'story updated'){
-        setIsStorySubmitted(true)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
 
   return (
     <div className = "create-story-container">
@@ -128,7 +100,7 @@ export default function CreateStory() {
       </div>
       <div className="create-story-btn-container">
         <Button 
-          onClick={id ? submitEdits : submitStory}
+          onClick={id ? handleSubmitEdits : handleSubmitStory}
           variant="contained" 
           sx={{ width: 250}}
         >
